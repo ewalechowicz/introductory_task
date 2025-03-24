@@ -6,12 +6,10 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { debounce } from 'lodash';
-
 import { ThemedText } from '@/components/ThemedText';
-import React, { memo, useCallback, useState } from 'react';
-import { Pokemon } from '@/types/pokemon';
+import React, { memo, useCallback } from 'react';
 import { ThemedView } from './ThemedView';
-import axios from 'axios';
+import { usePokemonList } from '@/hooks/usePokemonList';
 
 type PokemonView = {
   id: number;
@@ -19,43 +17,15 @@ type PokemonView = {
   image: string;
 };
 
-const PokemonList = ({
+export default function PokemonList({
   onItemClick,
 }: {
   onItemClick?: (id: number) => void;
-}) => {
-  const [pokemons, setPokemons] = useState<PokemonView[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [nextUrl, setNextUrl] = useState('https://pokeapi.co/api/v2/pokemon');
-
-  const fetchData = async () => {
-    if (loading) return;
-
-    setLoading(true);
-
-    try {
-      const response = await axios.get(nextUrl);
-      const data = await response.data;
-      const pokemonWithImages = data.results.map((pokemon: Pokemon) => {
-        const id = pokemon.url.split('/').slice(-2, -1)[0];
-        return {
-          id: id,
-          name: pokemon.name,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
-        };
-      });
-      setPokemons((items) => {
-        return [...items, ...pokemonWithImages];
-      });
-      setNextUrl(data.next);
-    } catch (error) {
-      console.error('Pokemon loading error:', error);
-    }
-    setLoading(false);
-  };
+}) {
+  const { pokemons, loading, fetchData } = usePokemonList();
 
   const listEmptyComponent = () => {
-    if (pokemons?.length === 0) {
+    if (pokemons?.length === 0 && !loading) {
       return <ThemedText>No data</ThemedText>;
     }
   };
@@ -64,7 +34,7 @@ const PokemonList = ({
     if (!loading) {
       fetchData();
     }
-  }, 500);
+  }, 300);
 
   return (
     <FlatList
@@ -90,7 +60,7 @@ const PokemonList = ({
       updateCellsBatchingPeriod={50}
     />
   );
-};
+}
 
 const ListItem = memo(
   ({
@@ -134,5 +104,3 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
-
-export default PokemonList;

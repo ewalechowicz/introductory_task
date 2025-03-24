@@ -1,11 +1,10 @@
 import { Platform, SafeAreaView, View, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PokemonDetails } from '@/types/pokemon';
 import PokemonInfo from '@/components/PokemonInfo';
 import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import { ThemedText } from '@/components/ThemedText';
 import ActionButton from '@/components/ActionButton';
 
@@ -38,11 +37,9 @@ export default function FavoriteScreen() {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getDataFromStorage();
-    }, [])
-  );
+  useEffect(() => {
+    getDataFromStorage();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -53,6 +53,7 @@ export default function PokemonInfo({ pokemon }: { pokemon: PokemonDetails }) {
           <Card title="Abilities">
             {pokemon.abilities.map((ability) => (
               <AbilityDetail
+                key={ability.ability.name}
                 name={getReadableName(ability.ability.name)}
                 hidden={ability.is_hidden}
               />
