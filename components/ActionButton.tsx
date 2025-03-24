@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 
 export default function ActionButton({
   title,
@@ -11,20 +12,20 @@ export default function ActionButton({
   disabled?: boolean;
 }) {
   return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      <ThemedText style={styles.buttonText}>{title}</ThemedText>
-    </TouchableOpacity>
+    <ThemedView>
+      <TouchableOpacity
+        style={[styles.button, disabled && styles.buttonDisabled]}
+        activeOpacity={disabled ? 1 : 0.7}
+        onPress={onPress}
+        disabled={disabled}
+      >
+        <ThemedText style={styles.buttonText}>{title}</ThemedText>
+      </TouchableOpacity>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   button: {
     alignSelf: 'center',
     backgroundColor: '#d6f5d6',
@@ -35,5 +36,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     textAlign: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
 });
