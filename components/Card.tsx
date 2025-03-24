@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
 import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 
 export default function Card({
   title,
@@ -10,10 +10,10 @@ export default function Card({
   children: React.ReactNode;
 }) {
   return (
-    <View style={styles.card}>
-      <ThemedText style={styles.cardTitle}>{title}</ThemedText>
+    <ThemedView style={styles.card}>
+      {title && <ThemedText style={styles.cardTitle}>{title}</ThemedText>}
       {children}
-    </View>
+    </ThemedView>
   );
 }
 

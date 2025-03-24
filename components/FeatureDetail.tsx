@@ -3,14 +3,14 @@ import { ThemedText } from './ThemedText';
 import { StyleSheet } from 'react-native';
 import { ReactElement } from 'react';
 
-export default function StatsItem({
+export default function FeatureDetail({
   name,
   value,
   icon,
 }: {
   name: string;
   value: number | string;
-  icon: ReactElement;
+  icon?: ReactElement;
 }) {
   return (
     <View style={styles.container}>

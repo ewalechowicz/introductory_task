@@ -1,7 +1,6 @@
 import { PokemonDetails } from '@/types/pokemon';
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { ThemedText } from './ThemedText';
+import { StyleSheet, Platform } from 'react-native';
 import { ThemedView } from './ThemedView';
 import ParallaxScrollView from './ParallaxScrollView';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -9,8 +8,9 @@ import { getStatIcon } from '@/utils/getStatIcon';
 import PokemonDetailsHeader from './PokemonDetailsHeader';
 import Card from './Card';
 import { getReadableName } from '@/utils/format';
-import StatsItem from './StatsItem';
+import FeatureDetail from './FeatureDetail';
 import ProfileDetail from './ProfileDetail';
+import AbilityDetail from './AbilityDetail';
 
 export default function PokemonInfo({ pokemon }: { pokemon: PokemonDetails }) {
   return (
@@ -29,15 +29,15 @@ export default function PokemonInfo({ pokemon }: { pokemon: PokemonDetails }) {
         }
       >
         <ThemedView style={styles.content}>
-          <View style={styles.profileInfo}>
+          <ThemedView style={styles.profileInfo}>
             <ProfileDetail title="Experience" value={pokemon.base_experience} />
             <ProfileDetail title="Height" value={pokemon.height} />
             <ProfileDetail title="Weight" value={pokemon.weight} />
-          </View>
+          </ThemedView>
           <Card title="Stats">
-            {pokemon.stats.map((stat, index) => (
-              <StatsItem
-                key={index}
+            {pokemon.stats.map((stat) => (
+              <FeatureDetail
+                key={stat.stat.name}
                 name={getReadableName(stat.stat.name)}
                 value={stat.base_stat}
                 icon={
@@ -51,13 +51,11 @@ export default function PokemonInfo({ pokemon }: { pokemon: PokemonDetails }) {
             ))}
           </Card>
           <Card title="Abilities">
-            {pokemon.abilities.map((ability, index) => (
-              <View key={index} style={styles.ability}>
-                <ThemedText style={styles.abilityText}>
-                  {getReadableName(ability.ability.name)}
-                </ThemedText>
-                {ability.is_hidden && <Ionicons name="eye-off" size={24} />}
-              </View>
+            {pokemon.abilities.map((ability) => (
+              <AbilityDetail
+                name={getReadableName(ability.ability.name)}
+                hidden={ability.is_hidden}
+              />
             ))}
           </Card>
         </ThemedView>
@@ -77,29 +75,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     backgroundColor: '#ffffff',
     padding: 20,
-    display: 'flex',
     gap: 15,
   },
   profileInfo: {
     padding: 15,
     backgroundColor: '#d6f5d6',
     borderRadius: 10,
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  ability: {
-    padding: 10,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 8,
-    marginBottom: 5,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  hiddenAbility: {
-    backgroundColor: '#e6e6e6',
-  },
-  abilityText: { fontSize: 16 },
 });

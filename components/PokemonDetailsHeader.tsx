@@ -24,19 +24,17 @@ export default function PokemonDetailsHeader({
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    display: 'flex',
     paddingVertical: 24,
     gap: 8,
   },
   image: {
     width: 130,
     height: 130,
-    padding: 20,
+    padding: 16,
     backgroundColor: 'white',
     borderRadius: 100,
   },
   title: {
-    display: 'flex',
     alignItems: 'center',
   },
   name: { fontSize: 24, fontWeight: 'bold', color: 'black' },
